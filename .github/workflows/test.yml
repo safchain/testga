@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$GITHUB_EVENT_PATH/comments"
+      - run: echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{github.event.pull_request.number}}/comments"
       - name: Add commit comment
         env:
           PR: ${{ github.event.number }}
@@ -27,4 +27,4 @@ jobs:
           curl -sL  -X POST -d @- \
             -H "Content-Type: application/json" \
             -H "Authorization: token ${{ secrets.TOKEN }}" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$PR/comments"
+            "https://api.github.com/repos/${{ github.repository }}/pulls/PULL_NUMBER/comments"
