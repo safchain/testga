@@ -1,5 +1,5 @@
 name: GitHub Actions Demo
-on: [push, pull_request]
+on: [pull_request]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -23,13 +23,15 @@ jobs:
         run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-      - run: echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ steps.pr.outputs.pull_request_number }}/comments"
-      - name: Add commit comment
+      - run: echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$PR/comments"
         env:
-          PR: ${{ github.event.number }}
+          PR: echo "${{ github.ref }}" | cut -d '/' -f 3
+       - name: Add commit comment
+        env:
+          PR: echo "${{ github.ref }}" | cut -d '/' -f 3
         run: |
           jq -nc '{"body": "test comment 🎉"}' | \
           curl -sL  -X POST -d @- \
             -H "Content-Type: application/json" \
             -H "Authorization: token ${{ secrets.TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/pulls/PULL_NUMBER/comments"
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${PR}/comments"
