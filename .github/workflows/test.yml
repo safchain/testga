@@ -21,6 +21,8 @@ jobs:
       - name: Get Pull Request Number
         id: pr
         run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
       - run: echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ steps.pr.outputs.pull_request_number }}/comments"
       - name: Add commit comment
         env:
