@@ -18,6 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ github.event.pull_request.number }}/comments"
       - name: Add commit comment
         run: |
           jq -nc '{"body": "test comment 🎉"}' | \
