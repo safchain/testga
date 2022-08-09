@@ -18,9 +18,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo $GITHUB_REF
-      - run: PR=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }') echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$PR/comments"
       - name: Add commit comment
+        env:
+          PR: ${{ github.event.number }}
         run: |
           PR=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }') jq -nc '{"body": "test comment 🎉"}' | \
           curl -sL  -X POST -d @- \
