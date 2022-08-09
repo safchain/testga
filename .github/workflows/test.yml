@@ -22,7 +22,7 @@ jobs:
         env:
           PR: ${{ github.event.number }}
         run: |
-          PR=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }') jq -nc '{"body": "test comment 🎉"}' | \
+          jq -nc '{"body": "test comment 🎉"}' | \
           curl -sL  -X POST -d @- \
             -H "Content-Type: application/json" \
             -H "Authorization: token ${{ secrets.TOKEN }}" \
