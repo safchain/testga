@@ -1,5 +1,5 @@
 name: GitHub Actions Demo
-on: [push]
+on: [push, pull_request]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -18,7 +18,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{github.event.pull_request.number}}/comments"
+      - name: Get Pull Request Number
+        id: pr
+        run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
+      - run: echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ steps.pr.outputs.pull_request_number }}/comments"
       - name: Add commit comment
         env:
           PR: ${{ github.event.number }}
