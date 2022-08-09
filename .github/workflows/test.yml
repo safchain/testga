@@ -23,5 +23,5 @@ jobs:
           jq -nc '{"body": "test comment 🎉"}' | \
           curl -sL  -X POST -d @- \
             -H "Content-Type: application/json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.TOKEN }}" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/comments"
