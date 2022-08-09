@@ -18,11 +18,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ github.event.pull_request.number }}/comments"
+      - run: PR=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }') echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$PR/comments"
       - name: Add commit comment
         run: |
-          jq -nc '{"body": "test comment 🎉"}' | \
+          PR=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }') jq -nc '{"body": "test comment 🎉"}' | \
           curl -sL  -X POST -d @- \
             -H "Content-Type: application/json" \
             -H "Authorization: token ${{ secrets.TOKEN }}" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/${{ github.event.pull_request.number }}/comments"
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$PR/comments"
