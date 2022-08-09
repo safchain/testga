@@ -18,15 +18,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Pull Request Number
-        id: pr
-        run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
       - run: echo "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$PR/comments"
         env:
           PR: echo "${{ github.ref }}" | cut -d '/' -f 3
-       - name: Add commit comment
+      - name: Add commit comment
         env:
           PR: echo "${{ github.ref }}" | cut -d '/' -f 3
         run: |
